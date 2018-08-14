@@ -62,7 +62,7 @@ class DemoViewController: UIViewController {
     case .second:
 
       segments = transcription.segments
-      let displaylink = CADisplayLink(target: self, selector: #selector(step))
+      let displaylink = CADisplayLink(target: self, selector: #selector(step1))
       startTime = CACurrentMediaTime()
       displaylink.add(to: .current, forMode: .defaultRunLoopMode)
       
@@ -72,6 +72,7 @@ class DemoViewController: UIViewController {
 
     case .third:
       print("third")
+      
     }
   }
   
@@ -84,12 +85,13 @@ class DemoViewController: UIViewController {
   
   private var currentSegment: Segment?
   private var currentTimestamp: TimeInterval?
+  private var isLast = false
 
-  @objc func step(displaylink: CADisplayLink) {
+  @objc func step1(displaylink: CADisplayLink) {
     // objective: display each segment for its duration.
 
     if self.segments.isEmpty {
-      print("segments is empty")
+      print("segments is empty, this is the last segment.")
     }
     
     // first time
@@ -107,21 +109,42 @@ class DemoViewController: UIViewController {
       self.overlayTextToDisplay += currentSegment.substring
       self.currentTimestamp = currentTimestamp + currentSegment.duration
       
-      // can we keep going?
       if self.segments.count > 0 {
         let nextSegment = self.segments.removeFirst()
         self.currentSegment = nextSegment
       }
+      else {
+        displaylink.invalidate()
+      }
     }
     
     overlayTextView.text = overlayTextToDisplay
+  }
+  
+  @objc func step2(displaylink: CADisplayLink) {
+    // objective: change attributes for string range of each segment at the beginning of their duration
+    
+    if self.segments.isEmpty {
+      print("segments is empty")
+    }
+    
+    
+  
+  }
+}
+
+// MARK: Extension util which generates NSAttributedString by text,font,color,backgroundColor
+extension NSAttributedString {
+  class func generate(from text: String, font: UIFont = UIFont.systemFont(ofSize: 16), color: UIColor = .black, backgroundColor: UIColor = .clear) -> NSAttributedString {
+    let atts: [NSAttributedStringKey : Any] = [.foregroundColor : color, .font : font, .backgroundColor : backgroundColor]
+    return NSAttributedString(string: text, attributes: atts)
   }
 }
 
 extension String {
   var characterArray: [Character]{
     var characterArray = [Character]()
-    for character in self.characters {
+    for character in self {
       characterArray.append(character)
     }
     return characterArray

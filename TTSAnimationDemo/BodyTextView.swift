@@ -36,7 +36,7 @@ class BodyTextView: UITextView {
     isEditable = false
     
     font = UIFont.systemFont(ofSize: 48, weight: .light)
-    textAlignment = .justified
+    textAlignment = .left
 
     textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
     sizeToFit()
