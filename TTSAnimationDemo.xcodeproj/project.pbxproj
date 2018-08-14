@@ -7,21 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D9D887992121658B0033D22B /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D887982121658B0033D22B /* Transcription.swift */; };
+		D9D887A021217D450033D22B /* example.txt in Resources */ = {isa = PBXBuildFile; fileRef = D9D8879F21217D450033D22B /* example.txt */; };
 		D9DAD89521211DBF009C236F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD89421211DBF009C236F /* AppDelegate.swift */; };
-		D9DAD89721211DBF009C236F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD89621211DBF009C236F /* ViewController.swift */; };
 		D9DAD89A21211DBF009C236F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9DAD89821211DBF009C236F /* Main.storyboard */; };
 		D9DAD89C21211DC2009C236F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9DAD89B21211DC2009C236F /* Assets.xcassets */; };
 		D9DAD89F21211DC2009C236F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9DAD89D21211DC2009C236F /* LaunchScreen.storyboard */; };
+		D9DAD8A72121228F009C236F /* PrimaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD8A62121228F009C236F /* PrimaryActionButton.swift */; };
+		D9DAD8A9212122D6009C236F /* BodyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD8A8212122D6009C236F /* BodyTextView.swift */; };
+		D9DAD8AB212149C9009C236F /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD8AA212149C9009C236F /* SelectionViewController.swift */; };
+		D9DAD8AD21214AA7009C236F /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD8AC21214AA7009C236F /* DemoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D9D887982121658B0033D22B /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
+		D9D8879F21217D450033D22B /* example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = example.txt; sourceTree = "<group>"; };
 		D9DAD89121211DBF009C236F /* TTSAnimationDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTSAnimationDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9DAD89421211DBF009C236F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D9DAD89621211DBF009C236F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D9DAD89921211DBF009C236F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D9DAD89B21211DC2009C236F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9DAD89E21211DC2009C236F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9DAD8A021211DC2009C236F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D9DAD8A62121228F009C236F /* PrimaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryActionButton.swift; sourceTree = "<group>"; };
+		D9DAD8A8212122D6009C236F /* BodyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTextView.swift; sourceTree = "<group>"; };
+		D9DAD8AA212149C9009C236F /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		D9DAD8AC21214AA7009C236F /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +64,14 @@
 		D9DAD89321211DBF009C236F /* TTSAnimationDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D9D8879F21217D450033D22B /* example.txt */,
 				D9DAD89421211DBF009C236F /* AppDelegate.swift */,
-				D9DAD89621211DBF009C236F /* ViewController.swift */,
 				D9DAD89821211DBF009C236F /* Main.storyboard */,
+				D9DAD8AA212149C9009C236F /* SelectionViewController.swift */,
+				D9DAD8AC21214AA7009C236F /* DemoViewController.swift */,
+				D9D887982121658B0033D22B /* Transcription.swift */,
+				D9DAD8A8212122D6009C236F /* BodyTextView.swift */,
+				D9DAD8A62121228F009C236F /* PrimaryActionButton.swift */,
 				D9DAD89B21211DC2009C236F /* Assets.xcassets */,
 				D9DAD89D21211DC2009C236F /* LaunchScreen.storyboard */,
 				D9DAD8A021211DC2009C236F /* Info.plist */,
@@ -123,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9DAD89F21211DC2009C236F /* LaunchScreen.storyboard in Resources */,
+				D9D887A021217D450033D22B /* example.txt in Resources */,
 				D9DAD89C21211DC2009C236F /* Assets.xcassets in Resources */,
 				D9DAD89A21211DBF009C236F /* Main.storyboard in Resources */,
 			);
@@ -135,8 +151,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9DAD89721211DBF009C236F /* ViewController.swift in Sources */,
+				D9DAD8AB212149C9009C236F /* SelectionViewController.swift in Sources */,
+				D9DAD8A72121228F009C236F /* PrimaryActionButton.swift in Sources */,
+				D9D887992121658B0033D22B /* Transcription.swift in Sources */,
+				D9DAD8AD21214AA7009C236F /* DemoViewController.swift in Sources */,
 				D9DAD89521211DBF009C236F /* AppDelegate.swift in Sources */,
+				D9DAD8A9212122D6009C236F /* BodyTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +302,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3U9W86J2XH;
-				INFOPLIST_FILE = TTSAnimationDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TTSAnimationDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -301,7 +321,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3U9W86J2XH;
-				INFOPLIST_FILE = TTSAnimationDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TTSAnimationDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
