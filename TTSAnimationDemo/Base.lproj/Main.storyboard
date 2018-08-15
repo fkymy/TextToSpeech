@@ -69,14 +69,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ADs-n9-TSR" customClass="BodyTextView" customModule="TTSAnimationDemo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="703.5" height="704"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DQw-sA-WUQ" customClass="BodyTextView" customModule="TTSAnimationDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="703" height="704"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -84,20 +77,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="e3a-lI-63O" firstAttribute="trailing" secondItem="ADs-n9-TSR" secondAttribute="trailing" id="0lu-8S-fYg"/>
-                            <constraint firstItem="DQw-sA-WUQ" firstAttribute="leading" secondItem="e3a-lI-63O" secondAttribute="leading" id="NID-FF-YUV"/>
                             <constraint firstItem="e3a-lI-63O" firstAttribute="bottom" secondItem="ADs-n9-TSR" secondAttribute="bottom" id="SCt-ie-7ob"/>
                             <constraint firstItem="ADs-n9-TSR" firstAttribute="leading" secondItem="e3a-lI-63O" secondAttribute="leading" id="XDZ-dJ-Sct"/>
                             <constraint firstItem="ADs-n9-TSR" firstAttribute="top" secondItem="e3a-lI-63O" secondAttribute="top" id="gJh-5L-17c"/>
-                            <constraint firstItem="e3a-lI-63O" firstAttribute="bottom" secondItem="DQw-sA-WUQ" secondAttribute="bottom" id="qiU-4W-wNq"/>
-                            <constraint firstItem="e3a-lI-63O" firstAttribute="trailing" secondItem="DQw-sA-WUQ" secondAttribute="trailing" id="r3M-Yo-d6m"/>
-                            <constraint firstItem="DQw-sA-WUQ" firstAttribute="top" secondItem="e3a-lI-63O" secondAttribute="top" id="rDQ-f8-9b6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="e3a-lI-63O"/>
                     </view>
                     <navigationItem key="navigationItem" id="0jS-YL-KLe"/>
                     <connections>
                         <outlet property="bodyTextView" destination="ADs-n9-TSR" id="0aL-bF-3K7"/>
-                        <outlet property="overlayTextView" destination="DQw-sA-WUQ" id="QX7-FF-MQ2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hVs-7B-rFx" userLabel="First Responder" sceneMemberID="firstResponder"/>

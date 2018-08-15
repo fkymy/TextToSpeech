@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 class BodyTextView: UITextView {
-  
+
   override init(frame: CGRect, textContainer: NSTextContainer?) {
     super.init(frame: frame, textContainer: textContainer)
     sharedInit()
@@ -38,7 +38,16 @@ class BodyTextView: UITextView {
     font = UIFont.systemFont(ofSize: 48, weight: .light)
     textAlignment = .left
 
-    textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
+    // textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
+    textContainerInset = UIEdgeInsetsMake(8, 0, 8, 0)
     sizeToFit()
+  }
+  
+  var attributes: [NSAttributedStringKey: Any] {
+    return [
+      .font: UIFont.systemFont(ofSize: 48, weight: .light),
+      .foregroundColor: UIColor.black,
+      .backgroundColor: UIColor.clear
+    ]
   }
 }

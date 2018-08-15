@@ -16,6 +16,9 @@ enum Animation: String {
 
 class DemoViewController: UIViewController {
 
+  // MARK: Properties
+  @IBOutlet weak var bodyTextView: BodyTextView!
+  
   var animation: Animation? {
     didSet {
       if view.window != nil {
@@ -24,154 +27,125 @@ class DemoViewController: UIViewController {
     }
   }
   
-  @IBOutlet weak var bodyTextView: BodyTextView!
-  @IBOutlet weak var overlayTextView: BodyTextView!
-  
-  private var transcription: Transcription = Transcription.transcription()
+  private var transcription: Transcription? {
+    didSet {
+      if let transcription = transcription {
+        segmentsToDisplay = transcription.segments
+        bodyTextView.attributedText = NSMutableAttributedString(string: transcription.formattedString, attributes: bodyTextView.attributes)
+      }
+    }
+  }
 
+  // properties for displaylink animation
+  private var startTime: CFTimeInterval!
+  private var displayedAttributes: [NSAttributedStringKey: Any]!
+  private var displayedSegments: [Segment]!
+  private var segmentsToDisplay: [Segment]!
+  private var currentSegment: Segment!
+  private var currentTimestamp: TimeInterval!
+
+  // MARK: Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    bodyTextView.text = transcription.formattedString
-    overlayTextView.text = ""
-    overlayTextView.textColor = UIColor.primary
-    overlayTextView.backgroundColor = .clear
+    transcription = Transcription.transcription()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     animate()
   }
+}
+
+// MARK: Animation
+extension DemoViewController {
   
   private func animate() {
     guard let animation = animation else { return }
+
     print("animation started: \(animation.rawValue)")
     
     switch animation {
     case .first:
-
+      
       let overlay = BodyTextView(frame: bodyTextView.frame, textContainer: bodyTextView.textContainer)
-      overlay.text = transcription.formattedString
+      overlay.text = segmentsToDisplay.reduce("", { $0 + $1.substring })
       overlay.textColor = UIColor.primary
       
       UIView.transition(from: bodyTextView, to: overlay, duration: 0.25, options: .transitionCrossDissolve)
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + transcription.duration) {
-        print("animation finished.")
-      }
-
-    case .second:
-
-      segments = transcription.segments
-      let displaylink = CADisplayLink(target: self, selector: #selector(step1))
-      startTime = CACurrentMediaTime()
-      displaylink.add(to: .current, forMode: .defaultRunLoopMode)
       
-      DispatchQueue.main.asyncAfter(deadline: .now() + transcription.duration) {
-        displaylink.invalidate()
-      }
+    case .second:
+      
+      guard let font = bodyTextView.font else { return }
+      let displaylink = CADisplayLink(target: self, selector: #selector(step))
+      let attributes: [NSAttributedStringKey: Any] = [
+        .font: font,
+        .foregroundColor: UIColor.primary,
+        .backgroundColor: UIColor.clear
+      ]
+      
+      animate(with: displaylink, to: attributes)
 
     case .third:
-      print("third")
+
+      guard let font = bodyTextView.font else { return }
+      let displaylink = CADisplayLink(target: self, selector: #selector(step))
+      let attributes: [NSAttributedStringKey: Any] = [
+        .font: font,
+        .foregroundColor: UIColor.white,
+        .backgroundColor: UIColor.darkGray
+      ]
       
+      animate(with: displaylink, to: attributes)
     }
   }
   
-  private var overlay: BodyTextView!
-  private var startTime: CFTimeInterval!
-  
-  private var segments: [Segment] = []
-  private var segmentsToDisplay: [Segment] = []
-  private var overlayTextToDisplay = ""
-  
-  private var currentSegment: Segment?
-  private var currentTimestamp: TimeInterval?
-  private var isLast = false
-
-  @objc func step1(displaylink: CADisplayLink) {
-    // objective: display each segment for its duration.
-
-    if self.segments.isEmpty {
-      print("segments is empty, this is the last segment.")
+  private func animate(with displaylink: CADisplayLink, to attributes: [NSAttributedStringKey: Any]) {
+    guard !segmentsToDisplay.isEmpty else {
+      print("segments is empty")
+      return
     }
-    
-    // first time
-    if self.currentSegment == nil {
-      self.currentTimestamp = 0.1
-      self.currentSegment = self.segments.removeFirst()
-    }
-    
-    guard let currentSegment = self.currentSegment else { return }
-    guard let currentTimestamp = self.currentTimestamp else { return }
-    
-    print("targetTimestamp: \(displaylink.targetTimestamp - startTime) vs. currentTimestamp: \(currentTimestamp)")
-    
+
+    displayedAttributes = attributes
+    currentSegment = segmentsToDisplay.removeFirst()
+    currentTimestamp = 0
+
+    displaylink.add(to: .current, forMode: .defaultRunLoopMode)
+    startTime = CACurrentMediaTime()
+  }
+  
+  @objc func step(displaylink: CADisplayLink) {
+    // objective: change attributes for string range of each segment at the beginning of their duration
+
     if displaylink.targetTimestamp - startTime > currentTimestamp {
-      self.overlayTextToDisplay += currentSegment.substring
-      self.currentTimestamp = currentTimestamp + currentSegment.duration
       
-      if self.segments.count > 0 {
-        let nextSegment = self.segments.removeFirst()
-        self.currentSegment = nextSegment
+      guard let formattedString = transcription?.formattedString else { return }
+      let range = (formattedString as NSString).range(of: currentSegment.substring)
+      let attributedText = NSMutableAttributedString(attributedString: bodyTextView.attributedText)
+      attributedText.addAttributes(displayedAttributes, range: range)
+      
+      bodyTextView.attributedText = attributedText
+      currentTimestamp = currentTimestamp + currentSegment.duration
+      
+      if segmentsToDisplay.count > 0 {
+        let nextSegment = segmentsToDisplay.removeFirst()
+        currentSegment = nextSegment
       }
       else {
         displaylink.invalidate()
       }
     }
-    
-    overlayTextView.text = overlayTextToDisplay
-  }
-  
-  @objc func step2(displaylink: CADisplayLink) {
-    // objective: change attributes for string range of each segment at the beginning of their duration
-    
-    if self.segments.isEmpty {
-      print("segments is empty")
-    }
-    
-    
-  
   }
 }
 
 // MARK: Extension util which generates NSAttributedString by text,font,color,backgroundColor
+extension String {
+  
+}
+
 extension NSAttributedString {
-  class func generate(from text: String, font: UIFont = UIFont.systemFont(ofSize: 16), color: UIColor = .black, backgroundColor: UIColor = .clear) -> NSAttributedString {
+  class func generate(from text: String, font: UIFont = UIFont.systemFont(ofSize: 48, weight: .light), color: UIColor = .black, backgroundColor: UIColor = .clear) -> NSAttributedString {
     let atts: [NSAttributedStringKey : Any] = [.foregroundColor : color, .font : font, .backgroundColor : backgroundColor]
     return NSAttributedString(string: text, attributes: atts)
-  }
-}
-
-extension String {
-  var characterArray: [Character]{
-    var characterArray = [Character]()
-    for character in self {
-      characterArray.append(character)
-    }
-    return characterArray
-  }
-}
-
-extension UITextView {
-  func typeOn(string: String) {
-    let characterArray = string.characterArray
-    var characterIndex = 0
-    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { (timer) in
-      if characterArray[characterIndex] != "$" {
-        while characterArray[characterIndex] == " " {
-          self.text.append(" ")
-          characterIndex += 1
-          if characterIndex == characterArray.count {
-            timer.invalidate()
-            return
-          }
-        }
-        self.text.append(characterArray[characterIndex])
-      }
-      characterIndex += 1
-      if characterIndex == characterArray.count {
-        timer.invalidate()
-      }
-    }
   }
 }
 
