@@ -16,7 +16,6 @@ enum Animation: String {
 
 class DemoViewController: UIViewController {
 
-  // MARK: Properties
   @IBOutlet weak var bodyTextView: BodyTextView!
   
   var animation: Animation? {
@@ -30,21 +29,24 @@ class DemoViewController: UIViewController {
   private var transcription: Transcription! {
     didSet {
       if let transcription = transcription {
-        segmentsToDisplay = transcription.segments
         bodyTextView.attributedText = NSMutableAttributedString(string: transcription.formattedString, attributes: bodyTextView.attributes)
+        segmentsToPlay = transcription.segments
+        segmentsPlayed = []
       }
     }
   }
 
-  // properties for displaylink animation
+  private var playedAttributes: [NSAttributedStringKey: Any]!
   private var startTime: CFTimeInterval!
-  private var displayedAttributes: [NSAttributedStringKey: Any]!
-  private var displayedSegments: [Segment]!
-  private var segmentsToDisplay: [Segment]!
-  private var currentSegment: Segment!
   private var currentTimestamp: TimeInterval!
+  private var segmentsToPlay: [Segment]!
+  private var segmentsPlayed: [Segment]!
+  private var currentSegment: Segment! {
+    didSet {
+      segmentsPlayed.append(currentSegment)
+    }
+  }
 
-  // MARK: Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
     transcription = Transcription.transcription()
@@ -61,23 +63,21 @@ extension DemoViewController {
   
   private func animate() {
     guard let animation = animation else { return }
-    print("animation started: \(animation.rawValue)")
-    
+
     switch animation {
     case .first:
       
       let overlay = BodyTextView(frame: bodyTextView.frame, textContainer: bodyTextView.textContainer)
-      overlay.text = segmentsToDisplay.reduce("", { $0 + $1.substring })
-      overlay.textColor = UIColor.primary
+      overlay.text = segmentsToPlay.reduce("", { $0 + $1.substring })
+      overlay.textColor = .primary
       
       UIView.transition(from: bodyTextView, to: overlay, duration: 0.25, options: .transitionCrossDissolve)
       
     case .second:
       
-      guard let font = bodyTextView.font else { return }
       let displaylink = CADisplayLink(target: self, selector: #selector(step))
       let attributes: [NSAttributedStringKey: Any] = [
-        .font: font,
+        .font: bodyTextView.font!,
         .foregroundColor: UIColor.primary,
         .backgroundColor: UIColor.clear
       ]
@@ -86,10 +86,9 @@ extension DemoViewController {
 
     case .third:
 
-      guard let font = bodyTextView.font else { return }
       let displaylink = CADisplayLink(target: self, selector: #selector(step))
       let attributes: [NSAttributedStringKey: Any] = [
-        .font: font,
+        .font: bodyTextView.font!,
         .foregroundColor: UIColor.white,
         .backgroundColor: UIColor.darkGray
       ]
@@ -99,13 +98,12 @@ extension DemoViewController {
   }
   
   private func animate(with displaylink: CADisplayLink, to attributes: [NSAttributedStringKey: Any]) {
-    guard !segmentsToDisplay.isEmpty else {
-      print("segments is empty")
+    guard !segmentsToPlay.isEmpty else {
       return
     }
 
-    displayedAttributes = attributes
-    currentSegment = segmentsToDisplay.removeFirst()
+    playedAttributes = attributes
+    currentSegment = segmentsToPlay.removeFirst()
     currentTimestamp = 0
 
     displaylink.add(to: .current, forMode: .defaultRunLoopMode)
@@ -113,13 +111,16 @@ extension DemoViewController {
   }
   
   @objc func step(displaylink: CADisplayLink) {
-    print("step: displaylinkTimestamp=\(displaylink.targetTimestamp - startTime), currentSegmentTimestamp=\(currentTimestamp)")
+    print("step: displaylinkTimestamp=\(displaylink.targetTimestamp - startTime), currentSegmentTimestamp=\(currentTimestamp!)")
 
     if displaylink.targetTimestamp - startTime > currentTimestamp {
       
-      let range = (transcription.formattedString as NSString).range(of: currentSegment.substring)
-      let attributedText = NSMutableAttributedString(attributedString: bodyTextView.attributedText)
-      attributedText.addAttributes(displayedAttributes, range: range)
+      let attributedText = NSMutableAttributedString()
+      let attributedTextPlayed = NSAttributedString(string: segmentsPlayed.reduce("", { $0 + $1.substring }), attributes: playedAttributes)
+      let attributedTextToPlay = NSAttributedString(string: segmentsToPlay.reduce("", { $0 + $1.substring }), attributes: bodyTextView.attributes)
+      
+      attributedText.append(attributedTextPlayed)
+      attributedText.append(attributedTextToPlay)
 
       UIView.transition(with: bodyTextView, duration: 0.15, options: .transitionCrossDissolve, animations: {
         self.bodyTextView.attributedText = attributedText
@@ -127,8 +128,8 @@ extension DemoViewController {
       
       currentTimestamp = currentTimestamp + currentSegment.duration
       
-      if segmentsToDisplay.count > 0 {
-        let nextSegment = segmentsToDisplay.removeFirst()
+      if segmentsToPlay.count > 0 {
+        let nextSegment = segmentsToPlay.removeFirst()
         currentSegment = nextSegment
       }
       else {

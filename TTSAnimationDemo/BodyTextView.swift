@@ -36,19 +36,24 @@ class BodyTextView: UITextView {
     isEditable = false
     isScrollEnabled = false
     
-    
     font = UIFont.systemFont(ofSize: 48, weight: .light)
+    textColor = .black
+    backgroundColor = .clear
     textAlignment = .left
 
     textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
     sizeToFit()
   }
 
-  var attributes: [NSAttributedStringKey: Any] {
+  var attributes: [NSAttributedStringKey: Any]? {
+    guard let font = font else { return nil }
+    guard let textColor = textColor else { return nil }
+    guard let backgroundColor = backgroundColor else { return nil }
+    
     return [
-      .font: UIFont.systemFont(ofSize: 48, weight: .light),
-      .foregroundColor: UIColor.black,
-      .backgroundColor: UIColor.clear
+      .font: font,
+      .foregroundColor: textColor,
+      .backgroundColor: backgroundColor
     ]
   }
 }
