@@ -27,7 +27,7 @@ class DemoViewController: UIViewController {
     }
   }
   
-  private var transcription: Transcription? {
+  private var transcription: Transcription! {
     didSet {
       if let transcription = transcription {
         segmentsToDisplay = transcription.segments
@@ -61,7 +61,6 @@ extension DemoViewController {
   
   private func animate() {
     guard let animation = animation else { return }
-
     print("animation started: \(animation.rawValue)")
     
     switch animation {
@@ -114,16 +113,18 @@ extension DemoViewController {
   }
   
   @objc func step(displaylink: CADisplayLink) {
-    // objective: change attributes for string range of each segment at the beginning of their duration
+    print("step: displaylinkTimestamp=\(displaylink.targetTimestamp - startTime), currentSegmentTimestamp=\(currentTimestamp)")
 
     if displaylink.targetTimestamp - startTime > currentTimestamp {
       
-      guard let formattedString = transcription?.formattedString else { return }
-      let range = (formattedString as NSString).range(of: currentSegment.substring)
+      let range = (transcription.formattedString as NSString).range(of: currentSegment.substring)
       let attributedText = NSMutableAttributedString(attributedString: bodyTextView.attributedText)
       attributedText.addAttributes(displayedAttributes, range: range)
+
+      UIView.transition(with: bodyTextView, duration: 0.15, options: .transitionCrossDissolve, animations: {
+        self.bodyTextView.attributedText = attributedText
+      }, completion: nil)
       
-      bodyTextView.attributedText = attributedText
       currentTimestamp = currentTimestamp + currentSegment.duration
       
       if segmentsToDisplay.count > 0 {
@@ -134,18 +135,6 @@ extension DemoViewController {
         displaylink.invalidate()
       }
     }
-  }
-}
-
-// MARK: Extension util which generates NSAttributedString by text,font,color,backgroundColor
-extension String {
-  
-}
-
-extension NSAttributedString {
-  class func generate(from text: String, font: UIFont = UIFont.systemFont(ofSize: 48, weight: .light), color: UIColor = .black, backgroundColor: UIColor = .clear) -> NSAttributedString {
-    let atts: [NSAttributedStringKey : Any] = [.foregroundColor : color, .font : font, .backgroundColor : backgroundColor]
-    return NSAttributedString(string: text, attributes: atts)
   }
 }
 

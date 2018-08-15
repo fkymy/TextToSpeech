@@ -34,15 +34,16 @@ class BodyTextView: UITextView {
     isUserInteractionEnabled = true
     isSelectable = true
     isEditable = false
+    isScrollEnabled = false
+    
     
     font = UIFont.systemFont(ofSize: 48, weight: .light)
     textAlignment = .left
 
-    // textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
-    textContainerInset = UIEdgeInsetsMake(8, 0, 8, 0)
+    textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
     sizeToFit()
   }
-  
+
   var attributes: [NSAttributedStringKey: Any] {
     return [
       .font: UIFont.systemFont(ofSize: 48, weight: .light),
